@@ -5,7 +5,7 @@ import { EllipsisVertical } from 'lucide-react';
 export default function Header() {
   const usuario = useStore.use.usuario();
   return (
-    <div className="p-2 h-72 bg-primary-500 rounded-b-3xl">
+    <div className="p-2 h-52 bg-primary-500 rounded-b-3xl">
       <div className="flex items-center justify-between text-white">
         <Avatar name={usuario} />
         <div className="text-2xl font-bold">Meu saldo</div>
