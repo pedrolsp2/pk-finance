@@ -8,10 +8,10 @@ export default function Header() {
     <div className="p-2 h-52 bg-primary-500 rounded-b-3xl">
       <div className="flex items-center justify-between text-white">
         <Avatar name={usuario} />
-        <div className="text-2xl font-bold">Meu saldo</div>
+        <div />
         <EllipsisVertical />
       </div>
-      <div className="flex flex-col items-center justify-center gap-1 mt-12">
+      <div className="flex flex-col items-center justify-center gap-1 ">
         <span className="text-neutral-100">Saldo atual</span>
         <div className="text-4xl font-bold text-white">R$ 0,00</div>
       </div>
