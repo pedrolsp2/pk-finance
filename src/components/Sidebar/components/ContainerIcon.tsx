@@ -11,11 +11,14 @@ export const ContainerIcon = ({
   to: string;
 }) => {
   return (
-    <Link to={to} className="flex flex-col items-center justify-center gap-1">
+    <Link
+      to={to}
+      className="flex items-center w-full gap-4 p-3 px-2 text-primary-500 hover:bg-neutral-50"
+    >
       <span className="text-lg">
         <Icon />
       </span>
-      <small>{label}</small>
+      <span>{label}</span>
     </Link>
   );
 };

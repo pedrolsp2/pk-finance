@@ -1,7 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useStore } from '@/store';
 import { getItem } from '@/utils/storage';
-import Sidebar from '@/components/Sidebar';
 
 const ProtectedLayout = () => {
   console.count('ProtectedLayout');
@@ -16,11 +15,8 @@ const ProtectedLayout = () => {
 
   return (
     <>
-      <div className="w-full h-screen overflow-y-auto grid grid-rows-[1fr,auto]">
+      <div className="w-full h-screen overflow-y-auto">
         <Outlet />
-        <div className="fixed bottom-0 w-full">
-          <Sidebar />
-        </div>
       </div>
     </>
   );
