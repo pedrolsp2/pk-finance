@@ -1,3 +1,10 @@
+import Lottie from 'lottie-react';
+import animate from '@/assets/lottie.json';
+
 export default function SplashLoading() {
-  return <div>SplashLoading</div>;
+  return (
+    <div className="w-screen h-screnn">
+      <Lottie animationData={animate} loop={true} />
+    </div>
+  );
 }

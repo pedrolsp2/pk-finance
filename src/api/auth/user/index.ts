@@ -1,6 +1,4 @@
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import instance from '..';
-import { getHeaders } from '@/api/utils';
 import { app, db } from '@/services/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
@@ -38,24 +36,4 @@ export const validateUserToken = async (userID: string) => {
   });
   const userLogado = data.find((u) => u.id === userID);
   return { token: userLogado.id, user: userLogado.nome };
-};
-
-export const recoverPassword = async (email: string) => {
-  const response = await instance.post('/restorepassword', {
-    email,
-  });
-
-  return response.data;
-};
-
-export const changePassword = async (password: string) => {
-  const response = await instance.post(
-    '/changepassword',
-    {
-      password,
-    },
-    { headers: getHeaders() }
-  );
-
-  return response.data;
 };

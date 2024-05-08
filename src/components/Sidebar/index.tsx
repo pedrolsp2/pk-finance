@@ -16,10 +16,12 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import Avatar from '../Avatar';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Sidebar() {
   const usuario = useStore.use.usuario();
+  const resetAll = useStore.use.resetAuthState();
+  const navigate = useNavigate();
   const itemsNav: RouteTypes[] = [
     {
       label: 'Inicio',
@@ -38,6 +40,11 @@ export default function Sidebar() {
     },
   ];
 
+  const hanldeLogout = () => {
+    resetAll();
+    navigate('/login');
+  };
+
   return (
     <Sheet>
       <SheetTrigger>
@@ -53,15 +60,15 @@ export default function Sidebar() {
         </SheetHeader>
         <div className="flex flex-col justify-between h-[90%] my-8">
           <Nav routes={itemsNav} />
-          <Link
-            to={''}
+          <button
+            onClick={hanldeLogout}
             className="flex items-center w-full gap-4 p-3 px-2 text-primary-500"
           >
             <span className="text-lg">
               <LogOut />
             </span>
             <span>Sair</span>
-          </Link>
+          </button>
         </div>
       </SheetContent>
     </Sheet>
