@@ -19,13 +19,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { novaEntrada } from '@/api/business/entrada';
 import { toast } from 'sonner';
 import { useStore } from '@/store';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { FirebaseReturnInsert } from '@/types/Promise';
 
 const schema = z.object({
   valor: z.number(),
@@ -37,6 +38,7 @@ export type FormValues = z.infer<typeof schema>;
 
 export default function NovaEntrada() {
   const [date, setDate] = useState<Date | undefined>();
+  const queryClient = useQueryClient();
 
   const user = useStore.use.usuario();
   const token = useStore.use.token();
@@ -46,12 +48,14 @@ export default function NovaEntrada() {
     handleSubmit,
     setValue,
     formState: { errors },
+    reset,
   } = useForm<FormValues>();
 
   const { mutate, status } = useMutation({
     mutationFn: novaEntrada,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onSuccess(data: any) {
+    onSuccess(data: FirebaseReturnInsert) {
+      reset();
+      queryClient.invalidateQueries({ queryKey: [`ENTRADA|${token}`] });
       if (data.status === 200) {
         toast.success(data.message, {
           style: { background: '#10b981', color: '#fff' },
@@ -64,8 +68,8 @@ export default function NovaEntrada() {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    mutate({ ...data, data: date, usuario: user, token: token });
+  const onSubmit = (DATA: FormValues) => {
+    mutate({ ...DATA, data: date, usuario: user, token: token });
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

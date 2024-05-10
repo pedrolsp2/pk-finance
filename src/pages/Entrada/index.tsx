@@ -1,13 +1,14 @@
 import NovaEntrada from './components/NovaEntrada';
 import Header from '@/components/Header';
 import { ArrowUp, Eye } from 'lucide-react';
+import Visualizacao from './components/Visualizacao';
 
 export default function Entrada() {
   return (
     <div>
       <Header />
       <div className="p-2">
-        <div className="flex items-center gap-2 mt-2 mb-4">
+        <div className="flex items-center gap-2 mt-2 mb-2">
           <div className="flex items-center justify-center w-12 h-12 rounded-full bg-neutral-100">
             <ArrowUp className="text-emerald-500" />
           </div>
@@ -20,6 +21,7 @@ export default function Entrada() {
           </div>
           <span className="text-lg font-bold">Visualização</span>
         </div>
+        <Visualizacao />
       </div>
     </div>
   );
