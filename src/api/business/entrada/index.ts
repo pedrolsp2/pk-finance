@@ -10,7 +10,7 @@ import {
 } from 'firebase/firestore';
 import { getInitials } from '@/utils/stringFormatter';
 import { FirebaseReturnGet, FirebaseReturnInsert } from '@/types/Promise';
-import { VisualizacaoType } from '@/pages/Entrada/components/Visualizacao';
+import { GastosType } from '@/pages/Gastos/components/Visualizacao';
 
 interface NovaEntrada extends FormValues {
   data: Date | undefined;
@@ -53,16 +53,60 @@ export const buscarEntradas = async ({
   TOKEN,
 }: {
   TOKEN: string;
-}): Promise<FirebaseReturnGet<VisualizacaoType>> => {
+}): Promise<FirebaseReturnGet<GastosType>> => {
   const citiesRef = collection(db, 'entrada');
 
   const q = query(citiesRef, where('USUARIO', '==', TOKEN));
 
   const querySnapshot = await getDocs(q);
-  const data: VisualizacaoType[] = [];
+  const data: GastosType[] = [];
 
   querySnapshot.forEach((doc) => {
-    data.push(doc.data() as VisualizacaoType);
+    data.push(doc.data() as GastosType);
+  });
+
+  return { status: 200, body: data };
+};
+
+export const novoGasto = async ({
+  categoria,
+  data,
+  descricao,
+  valor,
+  usuario,
+  token,
+}: NovaEntrada): Promise<FirebaseReturnInsert> => {
+  try {
+    const hash = generateRandomHashFromDate();
+    const ID = `${getInitials(usuario || 'P K')}|${hash}`;
+
+    await setDoc(doc(db, 'gasto', ID), {
+      CATEGORIA: categoria,
+      DATA: data,
+      DESCRICAO: descricao,
+      VALOR: valor,
+      USUARIO: token,
+    });
+    return { status: 200, message: 'Inserido com sucesso!' };
+  } catch (error) {
+    console.error(error);
+    return { status: 500, message: 'Erro ao inserir' };
+  }
+};
+export const buscarGastos = async ({
+  TOKEN,
+}: {
+  TOKEN: string;
+}): Promise<FirebaseReturnGet<GastosType>> => {
+  const citiesRef = collection(db, 'gasto');
+
+  const q = query(citiesRef, where('USUARIO', '==', TOKEN));
+
+  const querySnapshot = await getDocs(q);
+  const data: GastosType[] = [];
+
+  querySnapshot.forEach((doc) => {
+    data.push(doc.data() as GastosType);
   });
 
   return { status: 200, body: data };

@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react';
 import Card from './Card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { FiltroMes } from '@/types/Filters';
-import { useEntradas } from '@/hooks/useQueryEntradas';
+import { useGastos } from '@/hooks/useQueryGastos';
 
-export interface VisualizacaoType {
-  CATEGORIA: 'Salario' | 'Extra' | 'Outros';
+export interface GastosType {
+  CATEGORIA: 'Comida' | 'Pessoal' | 'Fixo' | 'Outros' | 'Cartao';
   DATA: Timestamp;
   DESCRICAO: string | null;
   VALOR: string;
@@ -21,11 +21,9 @@ export default function Visualizacao({
 }) {
   const token = useStore.use.token();
 
-  const [itemVisualizacao, setItemVisualizacao] = useState<VisualizacaoType[]>(
-    []
-  );
+  const [itemVisualizacao, setItemVisualizacao] = useState<GastosType[]>([]);
 
-  const { data, status } = useEntradas(token);
+  const { data, status } = useGastos(token);
 
   useEffect(() => {
     if (data) {
@@ -33,9 +31,9 @@ export default function Visualizacao({
     }
   }, [data]);
 
-  const VALOR_TOTAL_ENTRADA = itemVisualizacao
-    .filter((entrada) => {
-      const MES = entrada.DATA.toDate().getMonth();
+  const VALOR_TOTAL_GASTOS = itemVisualizacao
+    .filter((gasto) => {
+      const MES = gasto.DATA.toDate().getMonth();
       return state === undefined || MES === state;
     })
     .reduce((total, dado) => Number(total) + Number(dado.VALOR), 0);
@@ -43,9 +41,9 @@ export default function Visualizacao({
   return (
     <div className="p-4 bg-white rounded-lg shadow-lg">
       <div className="flex justify-between mb-4">
-        <h2 className="text-lg font-semibold">Saldo total</h2>
-        <strong className="text-xl font-semibold text-emerald-500">
-          {valueReal(VALOR_TOTAL_ENTRADA)}
+        <h2 className="text-lg font-semibold">Gasto total</h2>
+        <strong className="text-xl font-semibold text-red-500">
+          {valueReal(VALOR_TOTAL_GASTOS)}
         </strong>
       </div>
       {status === 'pending' ? (
@@ -59,8 +57,8 @@ export default function Visualizacao({
         </Skeleton>
       ) : (
         itemVisualizacao
-          .filter((entrada) => {
-            const MES = entrada.DATA.toDate().getMonth();
+          .filter((gasto) => {
+            const MES = gasto.DATA.toDate().getMonth();
             return state === undefined || MES === state;
           })
           .map((item, index) => <Card key={index} {...item} />)

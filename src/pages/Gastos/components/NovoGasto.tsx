@@ -20,7 +20,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { novaEntrada } from '@/api/business/entrada';
+import { novoGasto } from '@/api/business/entrada';
 import { toast } from 'sonner';
 import { useStore } from '@/store';
 import { useState } from 'react';
@@ -36,7 +36,7 @@ const schema = z.object({
 
 export type FormValues = z.infer<typeof schema>;
 
-export default function NovaEntrada() {
+export default function NovoGasto() {
   const [date, setDate] = useState<Date | undefined>();
   const queryClient = useQueryClient();
 
@@ -52,10 +52,10 @@ export default function NovaEntrada() {
   } = useForm<FormValues>();
 
   const { mutate, status } = useMutation({
-    mutationFn: novaEntrada,
+    mutationFn: novoGasto,
     onSuccess(data: FirebaseReturnInsert) {
       reset();
-      queryClient.invalidateQueries({ queryKey: [`ENTRADA|${token}`] });
+      queryClient.invalidateQueries({ queryKey: [`GASTOS|${token}`] });
       if (data.status === 200) {
         toast.success(data.message, {
           style: { background: '#10b981', color: '#fff' },
@@ -96,8 +96,10 @@ export default function NovaEntrada() {
               <SelectValue placeholder="" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Salario">Salario</SelectItem>
-              <SelectItem value="Extra">Extra</SelectItem>
+              <SelectItem value="Comida">Comida</SelectItem>
+              <SelectItem value="Pessoal">Pessoal</SelectItem>
+              <SelectItem value="Fixo">Fixo</SelectItem>
+              <SelectItem value="Cartao">Cartão</SelectItem>
               <SelectItem value="Outros">Outros</SelectItem>
             </SelectContent>
           </Select>

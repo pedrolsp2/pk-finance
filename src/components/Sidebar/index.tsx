@@ -60,15 +60,20 @@ export default function Sidebar() {
         </SheetHeader>
         <div className="flex flex-col justify-between h-[90%] my-8">
           <Nav routes={itemsNav} />
-          <button
-            onClick={hanldeLogout}
-            className="flex items-center w-full gap-4 p-3 px-2 text-primary-500"
-          >
-            <span className="text-lg">
-              <LogOut />
-            </span>
-            <span>Sair</span>
-          </button>
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={hanldeLogout}
+              className="flex items-center w-full gap-4 p-3 px-2 text-primary-500"
+            >
+              <span className="text-lg">
+                <LogOut />
+              </span>
+              <span>Sair</span>
+            </button>
+            <small className="mx-auto mb-2">
+              {import.meta.env.VITE_VERSION}
+            </small>
+          </div>
         </div>
       </SheetContent>
     </Sheet>

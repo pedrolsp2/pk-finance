@@ -1,25 +1,29 @@
+import { valueReal } from '@/utils/stringFormatter';
+import { HistoricoType } from '../..';
 import Badge from './Badge';
-
-interface CardHistoricoProps {
-  tipo: string;
-  valor: string;
-  data: string;
-  descricao: string;
-}
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 export default function CardHistorico({
-  descricao,
-  tipo,
-  valor,
-}: CardHistoricoProps) {
+  DESCRICAO,
+  TIPO,
+  VALOR,
+  CATEGORIA,
+  DATA,
+}: HistoricoType) {
   return (
-    <div className="grid grid-cols-[auto,1fr,auto] gap-2 items-center">
-      <Badge tipo={tipo} />
+    <div className="grid grid-cols-[auto,1fr,auto] gap-2 items-center py-3">
+      <Badge tipo={TIPO} />
       <div className="flex flex-col">
-        <span className="text-neutral-950">{tipo}</span>
-        <span className="text-neutral-500">{descricao}</span>
+        <span className="text-neutral-600">{CATEGORIA}</span>
+        <span className="text-neutral-500">{DESCRICAO}</span>
+        <small className="text-neutral-400">
+          {format(DATA.toDate(), 'PPP', { locale: ptBR })}
+        </small>
       </div>
-      <span className="text-bold">{valor}</span>
+      <span className="font-semibold text-bold">
+        {valueReal(Number(VALOR))}
+      </span>
     </div>
   );
 }
