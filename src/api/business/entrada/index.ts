@@ -11,6 +11,7 @@ import {
 import { getInitials } from '@/utils/stringFormatter';
 import { FirebaseReturnGet, FirebaseReturnInsert } from '@/types/Promise';
 import { GastosType } from '@/pages/Gastos/components/Visualizacao';
+import { VisualizacaoType } from '@/pages/Entrada/components/Visualizacao';
 
 interface NovaEntrada extends FormValues {
   data: Date | undefined;
@@ -53,16 +54,16 @@ export const buscarEntradas = async ({
   TOKEN,
 }: {
   TOKEN: string;
-}): Promise<FirebaseReturnGet<GastosType>> => {
+}): Promise<FirebaseReturnGet<VisualizacaoType>> => {
   const citiesRef = collection(db, 'entrada');
 
   const q = query(citiesRef, where('USUARIO', '==', TOKEN));
 
   const querySnapshot = await getDocs(q);
-  const data: GastosType[] = [];
+  const data: VisualizacaoType[] = [];
 
   querySnapshot.forEach((doc) => {
-    data.push(doc.data() as GastosType);
+    data.push(doc.data() as VisualizacaoType);
   });
 
   return { status: 200, body: data };
